@@ -1,5 +1,19 @@
 # JTF Syntax Standard
 
+## Scope
+
+JTF is a language-independent syntax for defining spreadsheet tables. It is derived from, and entirely dependent upon [JSON](https://www.json.org).
+
+The goal of this specification is only to define the syntax of valid JTF texts. It does not define how JTF text might be interpreted or interacted with.
+
+## Conformance
+
+> A conforming JTF text is a sequence of Unicode code points that strictly conforms to the JTF grammar defined by this specification.
+>
+> A conforming processor of [JTF] text should not accept any inputs that are not conforming [JTF] texts. A conforming processor may impose semantic restrictions that limit the set of conforming [JTF] texts that it will process.
+>
+> _Loosely based on the [JSON specification document](https://ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf)._
+
 ## File Format
 
 -   `.jtf` data must be written in valid [JSON](https://www.json.org/) syntax.
@@ -16,7 +30,7 @@
 -   Each value within the "data" object is an object representing a row of data.
 -   Within each row object, keys represent the indices of each column, and values represent the content of the column.
 -   Column content can be a string, number, or boolean. Both an empty string `""` and `null` are considered "empty" cells.
-    -   Strings may contain [inline "markdown"](#inline-markdown) for formatting (italic, bold, underline, strikethrough, etc.).
+    -   Strings may contain [inline "markdown"](#inline-markdown-standard) for formatting (italic, bold, underline, strikethrough, etc.).
     -   Strings may contain HTML `<span></span>` elements. Any other HTML elements will be ignored, (treated as strings) and any attributes other than `"class"` and `"style"` will be ignored.
     -   Strings may contain [formulas](FORMULAS.md).
 
@@ -25,11 +39,11 @@
 -   The "style" array contains CSS style definitions for styling cells, rows, or columns.
 -   Each style definition is an object with the following fields:
     -   "type": Either "class" or "style", indicating whether the style should be applied as a class or directly as inline CSS when rendered in an HTML dom structure.
-    -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array) for more info.
+    -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
     -   "data": Contains the content of the CSS style attribute or class attribute.
     -   "condition": `(optional)` Contains a [formula](FORMULAS.md), the result of which determines whether or not the style will be applied.
 
-# Inline Markdown Standard {#inline-markdown}
+# Inline Markdown Standard
 
 The following are valid inline markdown configurations for cell data:
 
@@ -57,7 +71,7 @@ _This is some italic text._
 ~~This is some text with a line through it.~~
 ```
 
-# Target Array Standard {#target-array}
+# Target Array Standard
 
 Target Arrays are used by the `"style"` data and the `"ruleset"` data to indicate targeted cells, rows, and columns.
 

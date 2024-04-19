@@ -10,3 +10,13 @@ export const isOnlyCapitals = (string) => {
 
 	return true;
 };
+
+/**
+ * Formats an array string for console display.
+ * @param {Array<*>} array The array to convert.
+ * @returns {string} A nicely formatted array string.
+ */
+export const arrayAsString = (array) =>
+	`[${array
+		.map((item) => (typeof item === "string" ? `"${item}"` : item))
+		.join(", ")}]`;
