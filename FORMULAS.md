@@ -1,6 +1,6 @@
 # JTF Formula Standard
 
-Formulas are psuedo-"functions" that run on/within `.jtf` cells. They are used to perform calculations, manipulate data, and automate tasks
+Formulas are statements that run on/within `.jtf` cells. They are used to perform calculations, manipulate data, and automate tasks
 
 ## Formula Rules
 
@@ -10,5 +10,4 @@ Formulas are psuedo-"functions" that run on/within `.jtf` cells. They are used t
 -   `.jtf` supports a wide range of built-in functions for performing specific tasks. Functions are usually followed by parentheses () and may require one or more arguments. Common functions include SUM, AVERAGE, IF, VLOOKUP, and many more.
 -   Just like in mathematics, formulas follows the order of operations (PEMDAS/BODMAS): Parentheses, Exponents, Multiplication and Division (from left to right), Addition and Subtraction (from left to right). You can use parentheses to override the default order.
 -   By default, cell references in formulas are relative, meaning they adjust when the formula is copied to other cells. You can use absolute references ($) to keep a reference fixed when copying a formula.
--   If there's an error in your formula, `.jtf` outputs will display an error message. Common errors include #DIV/0! (division by zero), #VALUE! (invalid data type), #REF! (invalid cell reference), and others.
 -   Array formulas allow you to perform calculations on multiple cells at once. They are enclosed in curly braces {} and can be created using special functions like SUMPRODUCT.

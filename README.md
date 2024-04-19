@@ -16,7 +16,7 @@ This library contains methods for validating, reading, and writing `.jtf` format
 
 For custom applications, developers looking to support `.jtf` files in their projects are encouraged to write their own code for interacting with the format. Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for more.
 
-## Example
+## Example JTF file.
 
 ```json
 {
