@@ -45,7 +45,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 # Inline Markdown Standard
 
-Almost every markdown interpreter handles different cases in different ways, but in general,
+Almost every markdown interpreter handles different cases in different ways, but in general:
 
 -   One `*` italicizes text.
 -   Two `*` make text bold.
