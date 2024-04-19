@@ -65,6 +65,12 @@ _This is some italic text._
 **_This is some bold, italic text._**
 ```
 
+or:
+
+```markdown
+\*\*\*This is some bold, italic text.\*\*\*
+```
+
 ## Line-Through Text
 
 ```markdown
