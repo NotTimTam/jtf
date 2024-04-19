@@ -26,7 +26,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 ## Data Object
 
--   The "data" object functions as an array-like structure, where each key represents the index of a row. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, all but latter-most are ignored.
+-   The "data" object functions as an array-like structure, where each key represents the index of a row. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, the latter-most overwrites the rest.
 -   Each value within the "data" object is an object representing a row of data.
 -   Within each row object, keys represent the indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
 -   Column content (cells) can be a string, number, or boolean. Both an empty string `""` and `null` are considered "empty" cells.
