@@ -12,6 +12,17 @@ export default class JTF {
 	constructor() {}
 
 	/**
+	 * **JTF methods that begin with "__" are intended for internal use only.**
+	 *
+	 * When the string is invalid, we determine what we are going to return based on `returnReason`.
+	 * @param {string} reason The reason why the string is invalid/.
+	 * @param {boolean} returnReason Whether or not to return the reason for data being invalid, rather than `false`.
+	 * @returns {string|boolean} The proper return value based on `validate()`'s parameters.
+	 */
+	static __handleReason = (reason, returnReason) =>
+		returnReason ? reason : false;
+
+	/**
 	 * Parse a string of JTF data and convert it into an object.
 	 * @param {string} string A string of JTF data to parse.
 	 * @returns {*} A parsed data object.
@@ -50,10 +61,24 @@ export default class JTF {
 		return column;
 	}
 
-	static validateCell(cell) {
-		console.log(cell);
+	/**
+	 *
+	 * @param {*} cell The cell to validate.
+	 * @param {boolean} returnReason When true, if the value of the cell is invalid data, the reason why is returned as a string. This requires you to ensure the result strictly equals `true` when validating. (defaults to `false`)
+	 * @returns {boolean|string} Whether or not the data is valid.
+	 */
+	static validateCell(cell, returnReason = false) {
+		console.log(cell, typeof cell);
 
-		return "Cell is bad.";
+		const isFormula = cell[0] === "=";
+
+		if (isFormula) {
+			// Validate formula.
+		} else {
+			// Validate static content.
+		}
+
+		return true; // The cell has passed all checks and is valid.
 	}
 
 	/**
@@ -63,30 +88,26 @@ export default class JTF {
 	 * @returns {boolean|string} Whether or not the data is valid.
 	 */
 	static validate(string, returnReason = false) {
-		const json = JSON.parse(string); // Parse the data.
+		if (typeof string !== "string") throw new Error();
 
-		/**
-		 * When the string is invalid, we determine what we are going to return based on `returnReason`.
-		 * @param {string} reason The reason why the string is invalid/.
-		 * @returns {string|boolean} The proper return value based on `validate()`'s parameters.
-		 */
-		const handleReason = (reason) => (returnReason ? reason : false);
+		const json = JSON.parse(string); // Parse the data.
 
 		// Confirm the main object has ONLY the valid keys.
 		const validMainKeys = ["data", "style"];
 		for (const key of Object.keys(json))
 			if (!validMainKeys.includes(key))
-				return handleReason(
+				return JTF.__handleReason(
 					`"${key}" is an invalid JTF object key. Expected: ${arrayAsString(
 						validMainKeys
-					)}`
+					)}`,
+					returnReason
 				);
 
 		if (!json.hasOwnProperty("data"))
-			return handleReason('Expected "data" key.');
+			return JTF.__handleReason('Expected "data" key.', returnReason);
 
 		if (!json.hasOwnProperty("style"))
-			return handleReason('Expected "style" key.');
+			return JTF.__handleReason('Expected "style" key.', returnReason);
 
 		const { data, style } = json;
 
@@ -97,7 +118,9 @@ export default class JTF {
 		 * @returns {boolean|string} `true` if the array keys are valid, or a string containing the reason why they are invalid.
 		 */
 		const validArrKeys = (object, objectName = '"data" object') => {
-			const invalidKeys = Object.keys(object)
+			const keys = Object.keys(object);
+
+			const invalidKeys = keys
 				.map((key) => [key, +key]) // Convert and store the key as a number.
 				.filter(([_, value]) => isNaN(value)); // Check if the stored number is valid.
 
@@ -114,7 +137,9 @@ export default class JTF {
 
 		// Validate data object.
 		const validKeys = validArrKeys(data, '"data" object'); // Check if data's keys are valid.
-		if (validKeys !== true) return handleReason(validKeys);
+
+		if (validKeys !== true)
+			return JTF.__handleReason(validKeys, returnReason);
 
 		/**
 		 * Determine if a columns cell values are valid.
@@ -136,10 +161,12 @@ export default class JTF {
 		// Validate each row's cells.
 		for (const [row, cells] of Object.entries(data)) {
 			const validKeys = validArrKeys(cells, `row "${row}"`); // Check if data's keys are valid.
-			if (validKeys !== true) return handleReason(validKeys);
+			if (validKeys !== true)
+				return JTF.__handleReason(validKeys, returnReason);
 
 			const cellsValid = validCells(cells, row);
-			if (cellsValid !== true) return handleReason(cellsValid);
+			if (cellsValid !== true)
+				return JTF.__handleReason(cellsValid, returnReason);
 		}
 
 		// Valid style object.
