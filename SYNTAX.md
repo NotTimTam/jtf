@@ -10,7 +10,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 > A conforming JTF text is a sequence of Unicode code points that strictly conforms to the JTF grammar defined by this specification.
 >
-> A conforming processor of [JTF] text should not accept any inputs that are not conforming [JTF] texts. A conforming processor may impose semantic restrictions that limit the set of conforming [JTF] texts that it will process.
+> A conforming processor of JTF text should not accept any inputs that are not conforming JTF texts. A conforming processor may impose semantic restrictions that limit the set of conforming JTF texts that it will process.
 >
 > _Loosely based on the [JSON specification document](https://ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf)._
 
