@@ -45,6 +45,13 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 # Inline Markdown Standard
 
+Almost every markdown interpreter handles different cases in different ways, but in general,
+
+-   One `*` italicizes text.
+-   Two `*` make text bold.
+-   Three `*` make text bold and italic.
+-   `*` and `_` can be used interchangeably, and there should be an equal amount of each on either side of the string.
+
 The following are valid inline markdown configurations for cell data:
 
 ## Italic
@@ -63,12 +70,6 @@ _This is some italic text._
 
 ```markdown
 **_This is some bold, italic text._**
-```
-
-or:
-
-```markdown
-\*\*\*This is some bold, italic text.\*\*\*
 ```
 
 ## Line-Through Text
