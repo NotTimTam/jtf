@@ -1,7 +1,7 @@
 {
 	"data": {
 		"0": {
-			"13": "**This is some bold text.**"
+			"13": "This is some <b>bold</b> text."
 		},
 		"1": {},
 		"999": {

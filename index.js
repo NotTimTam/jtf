@@ -68,14 +68,68 @@ export default class JTF {
 	 * @returns {boolean|string} Whether or not the data is valid.
 	 */
 	static validateCell(cell, returnReason = false) {
-		console.log(cell, typeof cell);
+		// Validate cell type.
+		const validTypes = ["string", "number", "boolean", "null"];
+		const cellType = cell === null ? "null" : typeof cell;
+		if (!validTypes.includes(cellType))
+			return JTF.__handleReason(
+				`Invalid cell type "${typeof cell}" provided.`,
+				returnReason
+			);
 
-		const isFormula = cell[0] === "=";
+		// Validate string content. Other content, like booleans and numbers, does not need to be validated.
+		if (cellType === "string") {
+			// Determine if cell is a formula or not.
+			const isFormula = cell[0] === "=";
+			if (isFormula) {
+				// Validate formula.
+			} else {
+				// Validate static strings as HTML elements to ensure no bad HTML is passed through.
+				const simulatedDOM = document.createElement("div");
 
-		if (isFormula) {
-			// Validate formula.
-		} else {
-			// Validate static content.
+				simulatedDOM.innerHTML = cell;
+
+				if (simulatedDOM.children.length > 0)
+					for (const child of simulatedDOM.children) {
+						// Validate tag names.
+						const validTags = [
+							"A",
+							"SPAN",
+							"DIV",
+							"B",
+							"EM",
+							"STRONG",
+							"U",
+							"SUP",
+							"SUB",
+							"BR",
+						];
+
+						if (!validTags.includes(child.tagName))
+							return JTF.__handleReason(
+								`Invalid tag name: '${child.tagName}'.`,
+								returnReason
+							);
+
+						// Validate attributes.
+						const attributes = child.getAttributeNames();
+						const validAttributes = [
+							"class",
+							"id",
+							"style",
+							"href",
+							"target",
+							"rel",
+						];
+
+						for (const attribute of attributes)
+							if (!validAttributes.includes(attribute))
+								return JTF.__handleReason(
+									`Disallowed HTML attribute provided: '${attribute}'.`,
+									returnReason
+								);
+					}
+			}
 		}
 
 		return true; // The cell has passed all checks and is valid.
@@ -149,7 +203,7 @@ export default class JTF {
 		 */
 		const validCells = (cells, rowName) => {
 			for (const [column, data] of Object.entries(cells)) {
-				const valid = JTF.validateCell(data);
+				const valid = JTF.validateCell(data, true);
 
 				if (valid !== true)
 					return `Invalid cell provided to column "${column}" in row "${rowName}": "${valid}".`;

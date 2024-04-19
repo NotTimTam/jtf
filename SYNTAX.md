@@ -29,9 +29,25 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 -   The "data" object functions as an array-like structure, where each key represents the index of a row. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, the latter-most overwrites the rest.
 -   Each value within the "data" object is an object representing a row of data.
 -   Within each row object, keys represent the indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
--   Column content (cells) can be a string, number, or boolean. Both an empty string `""` and `null` are considered "empty" cells.
-    -   Strings may contain [inline "markdown"](#inline-markdown-standard) for formatting (italic, bold, underline, strikethrough, etc.).
-    -   Strings may contain HTML `<span></span>` elements. Any other HTML elements will be ignored, (treated as strings) and any attributes other than `"class"` and `"style"` will be ignored.
+-   Column content (cells) can be a string, number, or boolean. Both empty strings `""`, and `null` are considered "empty" cells.
+    -   Strings may contain these html elements:
+        -   `span`
+        -   `b`
+        -   `em`
+        -   `strong`
+        -   `u`
+        -   `sup`
+        -   `sub`
+        -   `br`
+        -   and `a` elements.
+    -   Any other HTML elements should be ignored, (treated as strings or removed) and any attributes other than:
+        -   `"class"`
+        -   `"style"`
+        -   `"id"`
+        -   `"href"`
+        -   `"target"`
+        -   `"rel"`
+    -   should be ignored or removed.
     -   Strings may contain [formulas](FORMULAS.md).
 
 ## Style Array
@@ -42,41 +58,6 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
     -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
     -   "data": Contains the content of the CSS style attribute or class attribute.
     -   "condition": `(optional)` Contains a [formula](FORMULAS.md), the result of which determines whether or not the style will be applied.
-
-# Inline Markdown Standard
-
-Almost every markdown interpreter handles different cases in different ways, but in general:
-
--   One `*` italicizes text.
--   Two `*` make text bold.
--   Three `*` make text bold and italic.
--   `*` and `_` can be used interchangeably, and there should be an equal amount of each on either side of the string.
-
-The following are valid inline markdown configurations for cell data:
-
-## Italic
-
-```markdown
-_This is some italic text._
-```
-
-## Bold Text
-
-```markdown
-**This is some bold text.**
-```
-
-## Bold & Italic Text
-
-```markdown
-**_This is some bold, italic text._**
-```
-
-## Line-Through Text
-
-```markdown
-~~This is some text with a line through it.~~
-```
 
 # Target Array Standard
 

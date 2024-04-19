@@ -26,7 +26,7 @@ Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md
 {
 	"data": {
 		"0": {
-			"13": "**This is some bold text.**"
+			"13": "This is some <b>bold</b> text."
 		},
 		"1": {},
 		"999": {
@@ -34,8 +34,16 @@ Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md
 		}
 	},
 	"style": [
-		{ "type": "class", "target": [, 2], "data": "highlighted-row" },
-		{ "type": "style", "target": [[2], 1], "data": "font-weight: bold;" },
+		{
+			"type": "class",
+			"target": [null, 2],
+			"data": "highlighted-row"
+		},
+		{
+			"type": "style",
+			"target": [[2], 1],
+			"data": "font-weight: bold;"
+		},
 		{
 			"type": "style",
 			"target": [[], 3],

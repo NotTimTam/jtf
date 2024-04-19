@@ -14,9 +14,8 @@ const data = `
 		},
 		"14": {
 			"12": "egg",
-			"12": "egg2"
-		},
-		"14": {}
+			"13": "egg<span id='console'>egg4</span>"
+		}
 	},
 	"style": [
 		{
