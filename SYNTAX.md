@@ -28,8 +28,8 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 -   The "data" object functions as an array-like structure, where each key represents the index of a row.
 -   Each value within the "data" object is an object representing a row of data.
--   Within each row object, keys represent the indices of each column, and values represent the content of the column.
--   Column content can be a string, number, or boolean. Both an empty string `""` and `null` are considered "empty" cells.
+-   Within each row object, keys represent the indices of each column, and values represent the content of the column. (i.e., the cell)
+-   Column content (cells) can be a string, number, or boolean. Both an empty string `""` and `null` are considered "empty" cells.
     -   Strings may contain [inline "markdown"](#inline-markdown-standard) for formatting (italic, bold, underline, strikethrough, etc.).
     -   Strings may contain HTML `<span></span>` elements. Any other HTML elements will be ignored, (treated as strings) and any attributes other than `"class"` and `"style"` will be ignored.
     -   Strings may contain [formulas](FORMULAS.md).

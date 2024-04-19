@@ -26,7 +26,7 @@ For custom applications, developers looking to support `.jtf` files in their pro
 		},
 		"1": {},
 		"999": {
-			"0": "This is the =COLUMN cell."
+			"0": "This is the 0th cell in the 999th row."
 		}
 	},
 	"style": [
