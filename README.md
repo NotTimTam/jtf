@@ -16,7 +16,9 @@ It employs an `.xlsx` equivalent formula system and advanced, yet simplistic cel
 
 This library contains methods for validating, reading, and writing `.jtf` format files **with zero dependencies!**
 
-For custom applications, developers looking to support `.jtf` files in their projects are encouraged to write their own code for interacting with the format. Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for more.
+For custom applications, developers looking to support `.jtf` files in their projects are encouraged to write their own code for interacting with the format.
+
+Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for more.
 
 ## Example JTF file.
 
