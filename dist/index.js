@@ -8,7 +8,7 @@ import {
  * JTF document processing utility.
  */
 export default class JTF {
-	static supportedVersions = ["v1.1.4"];
+	static supportedVersions = ["v1.1.5"];
 
 	constructor() {}
 
@@ -104,6 +104,10 @@ export default class JTF {
 			throw new SyntaxError(
 				`Expected an array but recieved a value of type "${typeof style}".`
 			);
+
+		for (const { type, target, data } of style) {
+			console.log(type, target, data);
+		}
 	}
 
 	/**

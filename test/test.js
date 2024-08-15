@@ -6,8 +6,8 @@ const data = JTF.parse(`
 	"updatedAt": "${new Date().toISOString()}",
 	"metadata": {
 		"author": "NotTimTam",
-		"title": "JTF v1.1.4 Example Document",
-		"jtf": "v1.1.4",
+		"title": "JTF v1.1.5 Example Document",
+		"jtf": "v1.1.5",
 		"css": [".highlighed-row { color: yellow; }"]
 	},
 	"data": {

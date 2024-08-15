@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.4`)
+# JTF Syntax Standard (`v1.1.5`)
 
 ## Scope
 
@@ -33,6 +33,9 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   "css": Either:
             -   A string containing CSS data, or
             -   An array of strings containing CSS data.
+        -   "extra": An array that allows conforming processors to include additional data for extending their functionality. Each entry in the array should be an object containing:
+            -   "processor": A unique identifier for the processor that generated the data. This key helps distinguish between different processors' extensions.
+            -   Additional key/value pairs: These can be used to include processor-specific information or features not defined by the JTF syntax standard, as long as this additional data conforms to all specifications within the standard.
 
 ## Version Indication
 
@@ -79,7 +82,6 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
     -   "type": Either "class" or "style", indicating whether the style should be applied as a class or directly as inline CSS when rendered in an HTML dom structure.
     -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
     -   "data": Contains the content of the CSS style attribute or class attribute.
-    -   "condition": `(optional)` Contains a [formula](#formulas), the result of which determines whether or not the style will be applied.
 
 # Formulas
 
