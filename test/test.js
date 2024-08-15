@@ -7,8 +7,8 @@ const data = JTF.parse(`
 	
 		"metadata": {
 			"author": "NotTimTam",
-			"title": "JTF v1.1.5 Example Document",
-			"jtf": "v1.1.5",
+			"title": "JTF v1.1.6 Example Document",
+			"jtf": "v1.1.6",
 			"css": ".highlighed-row { color: yellow; }",
 			"extra": [
 				{
@@ -31,7 +31,8 @@ const data = JTF.parse(`
 					},
 					"1": {},
 					"999": {
-						"0": "This is the 0th cell in the 999th row."
+						"0": "This is the 0th cell in the 999th row.",
+						"1": null
 					}
 				},
 				"label": "First Table",

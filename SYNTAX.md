@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.5`)
+# JTF Syntax Standard (`v1.1.6`)
 
 ## Scope
 
@@ -52,25 +52,8 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   Each value within the table's "data" object is an object representing a row of data.
         -   Within each row object, keys represent the (0-based) indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
         -   Column content (cells) can be a string, number, or boolean. Both empty strings `""`, and `null` are considered "empty" cells.
-            -   Strings may contain these html elements:
-                -   `span`
-                -   `b`
-                -   `em`
-                -   `strong`
-                -   `u`
-                -   `sup`
-                -   `sub`
-                -   `br`
-                -   and `a` elements.
-            -   Any other HTML elements should be removed, (with their contents left behind) and any attributes other than:
-                -   `"class"`
-                -   `"style"`
-                -   `"id"`
-                -   `"href"`
-                -   `"target"`
-                -   `"rel"`
-            -   should be removed.
             -   Strings may contain [formulas](#formulas).
+            -   Due to the potential for strings to contain HTML, non-formula strings should always be treated as strings.
 -   Each table object **can** contain the following keys, but will be considered valid without them:
     -   "style": A [style array](#style-array) that applies only to this table.
 

@@ -4,13 +4,116 @@ import {
 	isValidVersionNumber,
 } from "./util/data.js";
 
+import * as sanitizeHtml from "sanitize-html";
+
 /**
  * JTF document processing utility.
  */
 export default class JTF {
-	static supportedVersions = ["v1.1.5"];
+	static supportedVersions = ["v1.1.6"];
 
 	constructor() {}
+
+	/**
+	 * Validate the key indeces of an object.
+	 * @param {Array<string>} keys The array of keys returned by `Object.keys(<object>)`
+	 */
+	static __validateKeys(keys) {
+		if (!(keys instanceof Array))
+			throw new SyntaxError(
+				'Provided keys object is not of type "array".'
+			);
+
+		keys.forEach((key) => {
+			if (isNaN(+key) || !Number.isInteger(+key))
+				throw new SyntaxError(
+					`Each object key-index must be a string containing an integer. "${key}" is invalid.`
+				);
+		});
+	}
+
+	/**
+	 * Check if a cell contains a formula.
+	 * @param {string} cell The cell to check.
+	 */
+	static isFormula(cell) {
+		if (typeof cell !== "string") return false;
+
+		if (cell[0] === "=") return true;
+	}
+
+	/**
+	 * Validate a cell.
+	 * @param {object} cell The cell to validate.
+	 */
+	static validateFormula(cell) {
+		if (!JTF.isFormula(cell)) return;
+	}
+
+	/**
+	 * Validate the contents of a table's cell.
+	 * @param {Object} cell The cell to validate.
+	 */
+	static validateCell(cell) {
+		switch (typeof cell) {
+			case "string":
+				JTF.validateFormula(cell);
+			case "number":
+			case "boolean":
+				break;
+			case "object":
+				if (cell === null) break;
+			case "undefined":
+			case "bigint":
+			case "symbol":
+			case "function":
+				throw new SyntaxError(
+					`Cell data of invalid type provided. Must be one of: ["string", "number", "boolean", null]`
+				);
+		}
+	}
+
+	/**
+	 * Validate a table's data object.
+	 * @param {Object} data The data to validate.
+	 */
+	static __validateTableData(data) {
+		// Validate keys.
+		JTF.__validateKeys(Object.keys(data));
+
+		// Validate cells.
+		Object.values(data).forEach((cell) => JTF.validateCell(cell));
+	}
+
+	/**
+	 * Validate a table within a JTF document's data object.
+	 * @param {Object} table The table to validate.
+	 */
+	static __validateTable(table) {
+		const { data, label, style } = table;
+
+		// Validate label.
+		if (!label || typeof label !== "string")
+			throw new SyntaxError(
+				'Each table in the document must have a "label" string value.'
+			);
+
+		// Validate data.
+		if (!isPlainObject(data))
+			throw new SyntaxError(
+				`Expected a plain object but recieved a value of type ${
+					data instanceof Array ? '"array"' : `"${typeof data}"`
+				}.`
+			);
+
+		JTF.__validateKeys(Object.keys(data));
+		Object.values(data).forEach((tableData) =>
+			JTF.__validateTableData(tableData)
+		);
+
+		// Validate styles.
+		if (style) JTF.validateStyle(style);
+	}
 
 	/**
 	 * Validate a JTF document's data object.
@@ -26,6 +129,14 @@ export default class JTF {
 					data instanceof Array ? '"array"' : `"${typeof data}"`
 				}.`
 			);
+
+		// Validate the index keys of the object.
+		JTF.__validateKeys(Object.keys(data));
+
+		// Validate tables.
+		const tables = Object.values(data);
+
+		tables.forEach((table) => JTF.__validateTable(table));
 	}
 
 	/**
@@ -42,7 +153,7 @@ export default class JTF {
 				}.`
 			);
 
-		const { author, title, jtf, css } = metadata;
+		const { author, title, jtf, css, extra } = metadata;
 
 		if (author && typeof author !== "string")
 			throw new SyntaxError(
@@ -61,12 +172,12 @@ export default class JTF {
 				);
 
 			if (!isValidVersionNumber(jtf))
-				throw new Error(
+				throw new SyntaxError(
 					`"jtf" parameter not in valid format. Expected format "v0.0.0", got: "${jtf}".`
 				);
 
 			if (!JTF.supportedVersions.includes(jtf))
-				throw new Error(
+				throw new SyntaxError(
 					`Document indicated JTF syntax standard version "${jtf}" is not supported. Supported versions: ${arrayAsString(
 						JTF.supportedVersions
 					)}`
@@ -82,15 +193,49 @@ export default class JTF {
 			if (css instanceof Array) {
 				for (const path of css)
 					if (typeof path !== "string")
-						throw new Error(
+						throw new SyntaxError(
 							`Invalid CSS configuration provided to document metadata. CSS array should contain only strings.`
 						);
 			} else if (typeof css !== "string")
-				throw new Error(
+				throw new SyntaxError(
 					"Invalid CSS configuration provided to document metadata. Should be a single string, or an array of strings containing CSS data."
 				);
 		}
+
+		if (extra) {
+			if (!(extra instanceof Array))
+				throw new SyntaxError(
+					'Invalid "extra" object provided to document metadata. Expected array.'
+				);
+
+			for (const processorData of extra) {
+				if (!isPlainObject(processorData))
+					throw new SyntaxError(
+						`Invalid processor data provided to "extra" metadata configuration. Expected plain object but recieved a value of type ${
+							processorData instanceof Array
+								? '"array"'
+								: `"${typeof processorData}"`
+						}.`
+					);
+
+				const { processor } = processorData;
+
+				if (!processor || typeof processor !== "string")
+					throw new SyntaxError(
+						`Invalid processor data provided to "extra" metadata configuration. Expected a "processor" key with a string value.`
+					);
+			}
+
+			console.debug(
+				`During parsing, extra data for ${extra.length} processors was detected within JTF document. No action is required.`
+			);
+		}
 	}
+
+	/**
+	 * @param {Array<string|number>} targetingArray The targetting array to validate.
+	 */
+	static validateTargetingArray(targetingArray) {}
 
 	/**
 	 * Validate a JTF style array.
@@ -106,7 +251,22 @@ export default class JTF {
 			);
 
 		for (const { type, target, data } of style) {
-			console.log(type, target, data);
+			// Validate the style definition's type.
+			const typeEnum = ["class", "style"];
+
+			if (!type || !typeEnum.includes(type))
+				throw new SyntaxError(
+					`Invalid style definition type provided. Must be one of: ${arrayAsString(
+						typeEnum
+					)}`
+				);
+
+			JTF.validateTargetingArray(target); // Validate the targeting array.
+
+			if (!data || typeof data !== "string")
+				throw new SyntaxError(
+					`Style definition "data" value must be of type string.`
+				);
 		}
 	}
 

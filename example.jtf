@@ -1,8 +1,8 @@
 {
 	"metadata": {
 		"author": "NotTimTam",
-		"title": "JTF v1.1.5 Example Document",
-		"jtf": "v1.1.5",
+		"title": "JTF v1.1.6 Example Document",
+		"jtf": "v1.1.6",
 		"css": ".highlighed-row { color: yellow; }",
 		"extra": [
 			{
@@ -21,7 +21,7 @@
 		"0": {
 			"data": {
 				"0": {
-					"13": "This is some <b>bold</b> text."
+					"13": "Hello, world!"
 				},
 				"1": {},
 				"999": {
@@ -43,7 +43,7 @@
 		"1": {
 			"data": {
 				"0": {
-					"0": "This is some <b>bold</b> text in table two."
+					"0": "This is some text in table two."
 				}
 			},
 			"label": "Second Table",
