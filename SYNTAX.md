@@ -170,7 +170,7 @@ They function as such:
     "target": [
         "0:10",
         0
-    ],
+    ]
 }
 ```
 
