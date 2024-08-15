@@ -40,14 +40,14 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   `sub`
         -   `br`
         -   and `a` elements.
-    -   Any other HTML elements should be ignored, (treated as strings or removed) and any attributes other than:
+    -   Any other HTML elements should be removed, (with their contents left behind) and any attributes other than:
         -   `"class"`
         -   `"style"`
         -   `"id"`
         -   `"href"`
         -   `"target"`
         -   `"rel"`
-    -   should be ignored or removed.
+    -   should be removed.
     -   Strings may contain [formulas](FORMULAS.md).
 
 ## Style Array
@@ -70,7 +70,10 @@ They function as such:
     -   If the column coordinate is not provided, or `null`, the style targets all columns in the corresponding row.
     -   If neither the row or column is provided, the style targets all rows and columns.
 -   Coordinates can be a single integer, indicating a single row or column, or an array of integers, indicating several rows or columns.
--   If a coordinate, (`[x, y]`) or an item in a coordinate array (`[[x, x, x, x], y]`) is a string, it is handled differently:
+-   If a coordinate, (`[x, y]`) or an item in a coordinate array (`[[x, x, x, x], y]`) is a string, it is handled as a delimiter:
     -   A string containing an integer is treated as an integer.
-    -   A string containing two integers, separated by a colon (`":"`) will be treated as a span of values. I.e. `"2:6"` resolves to `[2, 3, 4, 5, 6]`.
+    -   A string containing two integers, separated by a colon (`":"`) will be treated as a span of values, from the first, to (but not including) the last. I.e. `"2:6"` resolves to `[2, 3, 4, 5]`.
+    -   A string containing an integer proceeded by a colon will resolve to indeces 0 to the strings value. (`":4"` is treated as `[0, 1, 2, 3]`)
+    -   Likewise, a colon following an integer indicates the integer and every index after it are targeted. (`"4:"` is treated as `[4, 5, 6, ...]`)
+    -   A string contain just a colon targets all indeces. (`":"`)
     -   All other strings are invalid.
