@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.0`)
+# JTF Syntax Standard (`v1.1`)
 
 ## Scope
 
@@ -21,9 +21,15 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 ## Top-Level Object
 
 -   The top-most object in the document **must** contain the following keys:
-    -   "jtf": A string representing the JTF standard version being implemented in the file.
     -   "data": An object representing the tabular data.
-    -   "style": An array containing CSS style definitions.
+    -   "style": An array containing global CSS style definitions.
+-   The top-most object in the document **can** contain the following keys, but will be considered valid without them:
+    -   "createdAt": An ISO 8601 conforming [date-time string](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-time-string-format) indicating the date/time the file was created on.
+    -   "updatedAt": An ISO 8601 conforming [date-time string](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-time-string-format) indicating the date/time the file was last updated on.
+    -   "metadata": An object containing several details about the origin/ownership of the document:
+        -   "author": A string indicating the name of the document's author.
+        -   "title": A string indicating the title of the document, which can differ from the file name.
+        -   "jtf": A string representing the JTF standard version being implemented in the file.
 
 ## `jtf` String
 
@@ -32,33 +38,40 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 ## Data Object
 
--   The "data" object functions as an array-like structure, where each key represents the index of a row. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, the latter-most overwrites the rest.
--   Each value within the "data" object is an object representing a row of data.
--   Within each row object, keys represent the indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
--   Column content (cells) can be a string, number, or boolean. Both empty strings `""`, and `null` are considered "empty" cells.
-    -   Strings may contain these html elements:
-        -   `span`
-        -   `b`
-        -   `em`
-        -   `strong`
-        -   `u`
-        -   `sup`
-        -   `sub`
-        -   `br`
-        -   and `a` elements.
-    -   Any other HTML elements should be removed, (with their contents left behind) and any attributes other than:
-        -   `"class"`
-        -   `"style"`
-        -   `"id"`
-        -   `"href"`
-        -   `"target"`
-        -   `"rel"`
-    -   should be removed.
-    -   Strings may contain [formulas](FORMULAS.md).
+-   The top-level "data" object is used to store individual data tables. Each key in the object is an integer represents the index of the table. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, the latter-most overwrites the rest.
+-   Each value in the object is a "table" object containing the data of that table.
+-   Each table object **must** contain the following keys:
+    -   "label": A string representing an identifying label for the table. It is not necessary for this label to be unique, but processors may enforce label uniqueness if desired.
+    -   "data": An object that functions as an array-like structure, where each key represents the index of a row. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, the latter-most overwrites the rest.
+        -   Each value within the table's "data" object is an object representing a row of data.
+        -   Within each row object, keys represent the indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
+        -   Column content (cells) can be a string, number, or boolean. Both empty strings `""`, and `null` are considered "empty" cells.
+            -   Strings may contain these html elements:
+                -   `span`
+                -   `b`
+                -   `em`
+                -   `strong`
+                -   `u`
+                -   `sup`
+                -   `sub`
+                -   `br`
+                -   and `a` elements.
+            -   Any other HTML elements should be removed, (with their contents left behind) and any attributes other than:
+                -   `"class"`
+                -   `"style"`
+                -   `"id"`
+                -   `"href"`
+                -   `"target"`
+                -   `"rel"`
+            -   should be removed.
+            -   Strings may contain [formulas](FORMULAS.md).
+- Each table object **can** contain the following keys, but will be considered valid without them:
+    - "style": A [style array](#style-array) that applies only to this table.   
 
 ## Style Array
 
 -   The "style" array contains CSS style definitions for styling cells, rows, or columns.
+-   A top-level "style" array targets every data table, while one within a table only applies to that table.
 -   Each style definition is an object with the following fields:
     -   "type": Either "class" or "style", indicating whether the style should be applied as a class or directly as inline CSS when rendered in an HTML dom structure.
     -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
