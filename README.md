@@ -3,6 +3,7 @@
 JSON Table Format. An open-source file format for spreadsheets stored in JSON.
 
 [Read the syntax standard.](SYNTAX.md)
+
 [View an example JTF file.](example.jtf)
 
 This repository is a hybrid, it contains the standards and information on the `.jtf` file format, as well as an efficient library of tools for interacting with JTF data.
