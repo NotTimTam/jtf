@@ -14,7 +14,7 @@ The `.jtf` format is an attempt at bridging the gap between popular spreadsheet 
 
 `.jtf` data is stored in a familiar and readily accessible structure, **JSON!** Making it somewhat readable in its raw state, and requiring only a small amount of code to properly compile it into a table. `.jtf` data can be stored interchangably within JavaScript objects, `.json` files, and `.jtf` files.
 
-It employs an `.xlsx` equivalent formula system and advanced, yet simplistic cell targeting system.
+It employs an `.xlsx` equivalent formula system and advanced, easy-to-use cell targeting system.
 
 This library contains methods for validating, reading, and writing `.jtf` format files **with zero dependencies!**
 
