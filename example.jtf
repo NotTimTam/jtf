@@ -1,8 +1,8 @@
 {
 	"metadata": {
 		"author": "NotTimTam",
-		"title": "JTF v1.1.2 Example Document",
-		"jtf": "v1.1.2",
+		"title": "JTF v1.1.3 Example Document",
+		"jtf": "v1.1.3",
 		"css": ".highlighed-row { color: yellow; }"
 	},
 	"data": {
@@ -25,14 +25,14 @@
 						0
 					],
 					"data": "background-color: red;"
-				},
+				}
 			]
 		},
 		"1": {
 			"data": {
 				"0": {
 					"0": "This is some <b>bold</b> text in table two."
-				},
+				}
 			},
 			"label": "Second Table",
 			"style": [
@@ -43,9 +43,21 @@
 						0
 					],
 					"data": "background-color: blue;"
-				},
+				}
 			]
 		},
+		"3": {
+			"data": {
+				"0": {
+					"0": 14,
+					"1": 16
+				},
+				"1": {
+					"0": "=[0,0]+[1,0]"
+				}
+			},
+			"label": "Third Table"
+		}
 	},
 	"style": [
 		{
