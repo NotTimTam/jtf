@@ -24,15 +24,12 @@ export const arrayAsString = (array) =>
 		.map((item) => (typeof item === "string" ? `"${item}"` : item))
 		.join(", ")}]`;
 
-// /**
-//  * Check if a string is only capital letters.
-//  * @param {string} string The string to check.
-//  * @returns {boolean} Whether the string is all capital letters or not.
-//  */
-// export const isOnlyCapitals = (string) => {
-// 	const regex = /^[A-Z]+$/;
+/**
+ * Check if an index value is valid.
+ * @param {string|number} index The index value to check.
+ */
+export const isValidIndex = (index) => {
+	if (isNaN(+index) || !Number.isInteger(+index)) return false;
 
-// 	if (!regex.test(string)) return false;
-
-// 	return true;
-// };
+	return true;
+};

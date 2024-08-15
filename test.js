@@ -1,10 +1,9 @@
 import JTF from "./dist/index.js";
 
+import fs from "fs";
+
 const data = JTF.parse(`
-{
-	"createdAt": "2020-01-01T00:00:00.000Z",
-	"updatedAt": "${new Date().toISOString()}",
-	
+{	
 		"metadata": {
 			"author": "NotTimTam",
 			"title": "JTF v1.1.8 Example Document",
@@ -117,4 +116,7 @@ const data = JTF.parse(`
 	}
 `);
 
-// console.log(data);
+// fs.writeFileSync("output.csv", data.tableToCSV("0"));
+
+console.log(data.getCell(0, 13));
+console.log(data.getCell(13, 0));
