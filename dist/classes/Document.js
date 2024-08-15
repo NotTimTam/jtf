@@ -89,11 +89,17 @@ export default class Document {
 
 	/**
 	 * Get the content of a cell.
+	 * @param {number|string} table The index of the table to convert.
 	 * @param {string|number} x The x-coordinate of the cell.
 	 * @param {string|number} y The y-coordinate of the cell.
 	 * @returns {string|number|boolean|null} The content of the cell or `undefined` if the cell does not exist.
 	 */
-	getCell(x, y) {
+	getCell(table, x, y) {
+		if (!isValidIndex(table))
+			throw new Error(
+				`Provided "table" value "${table}" is not a valid integer.`
+			);
+
 		if (!isValidIndex(x))
 			throw new Error(
 				`Provided x-coordinate value "${x}" is not a valid integer.`
@@ -103,5 +109,17 @@ export default class Document {
 			throw new Error(
 				`Provided y-coordinate value "${y}" is not a valid integer.`
 			);
+
+		x = x.toString();
+		y = y.toString();
+		table = table.toString();
+
+		table = this.data[table];
+
+		if (!table) throw new Error(`No table in document at index "${table}"`);
+
+		const { data } = table;
+
+		return data[y] && data[y][x];
 	}
 }

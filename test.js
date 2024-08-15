@@ -118,5 +118,5 @@ const data = JTF.parse(`
 
 // fs.writeFileSync("output.csv", data.tableToCSV("0"));
 
-console.log(data.getCell(0, 13));
-console.log(data.getCell(13, 0));
+console.log(data.getCell(0, 13, 13));
+console.log(data.getCell(0, 13, 0));
