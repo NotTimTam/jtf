@@ -1,8 +1,8 @@
 {
 	"metadata": {
 		"author": "NotTimTam",
-		"title": "JTF v1.1.7 Example Document",
-		"jtf": "v1.1.7",
+		"title": "JTF v1.1.8 Example Document",
+		"jtf": "v1.1.8",
 		"css": ".highlighed-row { color: yellow; }",
 		"extra": [
 			{
@@ -65,7 +65,7 @@
 					"1": 16
 				},
 				"1": {
-					"0": "=[0,0]+[1,0]"
+					"0": "27"
 				}
 			},
 			"label": "Third Table"

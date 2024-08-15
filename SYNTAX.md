@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.7`)
+# JTF Syntax Standard (`v1.1.8`)
 
 ## Scope
 
@@ -52,8 +52,6 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   Each value within the table's "data" object is an object representing a row of data.
         -   Within each row object, keys represent the (0-based) indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
         -   Column content (cells) can be a string, number, or boolean. Both empty strings `""`, and `null` are considered "empty" cells.
-            -   Strings may contain [formulas](#formulas).
-            -   Due to the potential for strings to contain HTML, non-formula strings should always be treated as strings.
 -   Each table object **can** contain the following keys, but will be considered valid without them:
     -   "style": A [style array](#style-array) that applies only to this table.
 
@@ -66,85 +64,9 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
     -   "data": Contains the content of the CSS style attribute or class attribute.
 -   A top-level "style" array applies to every table. "style" cascade, meaning table level styles will overwrite styles set at the top-level, unless overrides, such as the `!important` rule are used.
 
-# Formulas
-
-Formulas are statements that run on/within `.jtf` cells. They are used to perform calculations and manipulate data.
-
--   All formulas must start with an equals sign (`"="`). This indicates that what follows is a formula and not just text.
--   Formulas often involve referencing other cells. Cell references are created using [targeting arrays](#target-array-standard).
--   The `.jtf` format supports various mathematical operators, including addition (+), subtraction (-), multiplication (\*), division (/), exponentiation (^), and concatenation (&).
-    -   Just like in mathematics, formulas follows the order of operations (PEMDAS/BODMAS): Parentheses, Exponents, Multiplication and Division (from left to right), Addition and Subtraction (from left to right). You can use parentheses to override the default order.
-    -   Formulas should only function on cells of type `"number"`.
-        -   See [function implementation](#functions) for potential `.jtf` processor implementation of `"string"` and `"boolean"` type cells.
-
-## Referencing Multiple Cells
-
-If a formula uses a cell reference that targets multiple cells, the values in those cells should be combined before the formula executes. Example:
-
-```jtf
-{
-    "0": {
-        "0": 15,
-        "1": 12,
-        "2": 8,
-        "3": 4,
-    },
-    "1": {
-        "0": 12,
-        "1": 13,
-        "2": 24,
-        "3": 36,
-    },
-    "2": {
-        "0": "=[0:4, 0]*[0:4, 1]"
-    }
-}
-```
-
-The cell at `[0, 2]` would perform this operation: `(15 + 12 + 8 + 4) * (12 + 13 + 24 + 36)`
-
-and display this: `3315`.
-
-## Functions
-
-Function implementation within `.jtf` formulas is optional and determined by the `.jtf` processor.
-
-### Syntax Requirements
-
-If a `.jtf` processor supports functions, it must adhere to the following syntactic rules:
-
--   Function Naming:
-    -   Must start with a letter or an underscore (`_`).
-    -   Cannot start with a number or any special character other than an underscore.
-    -   Must be followed by parentheses `()` that may contain one or more comma-separated arguments.
-
-### Behavioral Requirements
-
-Functions within `.jtf` formulas must follow these rules:
-
--   Cell References:
-
-    -   Functions that accept cell references as parameters must use the [targeting array standard](#target-array-standard) to specify the cells. They must also follow [formula rules](#referencing-multiple-cells) for handling arrays that target more than one cell.
-
--   Formula Integration:
-    -   Functions should resolve to a value that contributes to the result of a formula.
-    -   The operations of a function must affect only the cell where the formula is executed, and only directly through the return value of the function.
-    -   Functions cannot directly modify the contents of any cell other than the one they are executed in.
-    -   Functions may resolve to data types other than numbers. However, since formulas operate on numeric data, processors must handle scenarios where a formula involves operations between different data types.
-
-### Example Function
-
-```jtf
-{
-    "0": {
-        "0": "=myFunction(['1:4', 13], 'someStringInput')"
-    }
-}
-```
-
 # Target Array Standard
 
-Target Arrays are used by the `"style"`, `"formula"` and `"ruleset"` data to indicate targeted cells, rows, and columns. All indeces are 0-based.
+Target Arrays are used by the `"style"`, and `"ruleset"` data to indicate targeted cells, rows, and columns. All indeces are 0-based.
 
 They function as such:
 
@@ -160,26 +82,3 @@ They function as such:
     -   Likewise, a colon following an integer indicates the integer and every index after it are targeted. (`"4:"` is treated as `[4, 5, 6, ...]`)
     -   A string contain just a colon targets all indeces. (`":"`)
     -   All other strings are invalid.
-
-## Using Target Arrays in Style Arrays
-
--   When specifying ranges using colon delimiters in target arrays, the delimiters must be enclosed in quotation marks. This is to ensure accurate parsing and correct interpretation of the range. Example:
-
-```jtf
-{
-    "target": [
-        "0:10",
-        0
-    ]
-}
-```
-
-## Using Target Arrays in Formula Strings
-
--   Within formula strings, colon delimiters do not need additional quotations since the entire formula is already enclosed in quotation marks. Example:
-
-```jtf
-{
-    "0": "=[16:27, 0]+[0:4,0]"
-}
-```
