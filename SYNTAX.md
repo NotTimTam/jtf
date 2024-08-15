@@ -29,9 +29,9 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
     -   "metadata": An object containing several details about the origin/ownership of the document:
         -   "author": A string indicating the name of the document's author.
         -   "title": A string indicating the title of the document, which can differ from the file name.
-        -   "jtf": A [string representing the JTF standard version](#jtf-string) being implemented in the file.
+        -   "jtf": A [string representing the JTF standard version](#version-indication) being implemented in the file.
 
-## `jtf` String
+## Version Indication
 
 -   The `"jtf"` string within a document's metadata object is used to indicate the version of the JTF standard that the document conforms to. JTF processors can use this information to indicate whether the file can be edited with their implementation of the JTF standard.
 -   The format of the string is the letter "v" followed by the full version number of the JTF standard used. I.e., `{ "jtf": "v1.0" }`
