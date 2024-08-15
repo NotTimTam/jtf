@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.6`)
+# JTF Syntax Standard (`v1.1.7`)
 
 ## Scope
 
@@ -96,7 +96,7 @@ If a formula uses a cell reference that targets multiple cells, the values in th
         "3": 36,
     },
     "2": {
-        "0": "=["0:4", 0]*["0:4", 1]"
+        "0": "=[0:4, 0]*[0:4, 1]"
     }
 }
 ```
@@ -160,3 +160,26 @@ They function as such:
     -   Likewise, a colon following an integer indicates the integer and every index after it are targeted. (`"4:"` is treated as `[4, 5, 6, ...]`)
     -   A string contain just a colon targets all indeces. (`":"`)
     -   All other strings are invalid.
+
+## Using Target Arrays in Style Arrays
+
+-   When specifying ranges using colon delimiters in target arrays, the delimiters must be enclosed in quotation marks. This is to ensure accurate parsing and correct interpretation of the range. Example:
+
+```jtf
+{
+    "target": [
+        "0:10",
+        0
+    ],
+}
+```
+
+## Using Target Arrays in Formula Strings
+
+-   Within formula strings, colon delimiters do not need additional quotations since the entire formula is already enclosed in quotation marks. Example:
+
+```jtf
+{
+    "0": "=[16:27, 0]+[0:4,0]",
+}
+```

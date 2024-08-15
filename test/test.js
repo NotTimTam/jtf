@@ -7,8 +7,8 @@ const data = JTF.parse(`
 	
 		"metadata": {
 			"author": "NotTimTam",
-			"title": "JTF v1.1.6 Example Document",
-			"jtf": "v1.1.6",
+			"title": "JTF v1.1.7 Example Document",
+			"jtf": "v1.1.7",
 			"css": ".highlighed-row { color: yellow; }",
 			"extra": [
 				{
@@ -28,6 +28,12 @@ const data = JTF.parse(`
 				"data": {
 					"0": {
 						"13": "This is some <b>bold</b> text."
+						"0": "=SUM([0:3, 1:4])",
+						"1": "=A1 + B2",
+						"2": "=myFunction([1:3], 5)",
+						"3": "=A1 + *B2",
+						"4": "=A1 + (B2 * 3",
+						"5": "=SUM([0,1])"
 					},
 					"1": {},
 					"999": {

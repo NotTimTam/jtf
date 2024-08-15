@@ -10,7 +10,7 @@ import * as sanitizeHtml from "sanitize-html";
  * JTF document processing utility.
  */
 export default class JTF {
-	static supportedVersions = ["v1.1.6"];
+	static supportedVersions = ["v1.1.7"];
 
 	constructor() {}
 
@@ -43,11 +43,95 @@ export default class JTF {
 	}
 
 	/**
-	 * Validate a cell.
-	 * @param {object} cell The cell to validate.
+	 * Validate a formula.
+	 * @param {object} formula The formula to validate.
 	 */
-	static validateFormula(cell) {
-		if (!JTF.isFormula(cell)) return;
+	static validateFormula(formula) {
+		if (!JTF.isFormula(formula)) return;
+
+		// Remove leading "=" for further checks
+		formula = formula.slice(1).trim();
+
+		// Regular expressions for validation
+		const functionNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+		const cellReferenceRegex = /^\[\d+(?::\d+)?(?:,\d+(?::\d+)?)?\]$/;
+		const validCharsRegex = /^[\d\+\-\*\^\/\&\(\)\[\]\w\s]+$/;
+
+		// Check if the formula contains only valid characters
+		if (!validCharsRegex.test(formula))
+			throw new SyntaxError(
+				`Formula "=${formula}" contains invalid characters.`
+			);
+
+		// Validate function names and cell references
+		const functionPattern = /([a-zA-Z_][a-zA-Z0-9_]*)\(([^)]*)\)/g;
+		let match;
+
+		// Check for functions and their arguments
+		while ((match = functionPattern.exec(formula)) !== null) {
+			const funcName = match[1];
+			const args = match[2].split(",").map((arg) => arg.trim());
+
+			if (!functionNameRegex.test(funcName)) {
+				return false;
+			}
+
+			for (const arg of args) {
+				if (arg.startsWith("[") && arg.endsWith("]")) {
+					if (!cellReferenceRegex.test(arg)) {
+						return false;
+					}
+				} else if (
+					!isNaN(Number(arg)) ||
+					arg === "true" ||
+					arg === "false" ||
+					arg === "null"
+				) {
+					// Valid number or boolean
+				} else {
+					return false;
+				}
+			}
+		}
+
+		// Check for cell references in the formula
+		const cellReferencePattern = /\[\d+(?::\d+)?(?:,\d+(?::\d+)?)?\]/g;
+		while ((match = cellReferencePattern.exec(formula)) !== null) {
+			if (!cellReferenceRegex.test(match[0])) {
+				return false;
+			}
+		}
+
+		// Check for balanced parentheses
+		let parenthesisBalance = 0;
+		for (const char of formula) {
+			if (char === "(") {
+				parenthesisBalance++;
+			} else if (char === ")") {
+				parenthesisBalance--;
+				if (parenthesisBalance < 0) {
+					return false;
+				}
+			}
+		}
+
+		if (parenthesisBalance !== 0) {
+			return false;
+		}
+
+		// Check for invalid usage of operators
+		if (/[\+\-\*\^\/\&]{2,}/.test(formula)) {
+			return false;
+		}
+
+		// Ensure operators are not at the start or end, or after '(' and before ')'
+		const invalidOperatorPositions =
+			/(^[\+\-\*\^\/\&])|([\+\-\*\^\/\&]$)|([\+\-\*\^\/\&]\()/;
+		if (invalidOperatorPositions.test(formula)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
