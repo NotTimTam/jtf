@@ -3,7 +3,19 @@
 		"author": "NotTimTam",
 		"title": "JTF v1.1.5 Example Document",
 		"jtf": "v1.1.5",
-		"css": ".highlighed-row { color: yellow; }"
+		"css": ".highlighed-row { color: yellow; }",
+		"extra": [
+			{
+				"processor": "jtf-core",
+				"someExtraData": [
+					345,
+					2345,
+					8365,
+					21345,
+					764
+				]
+			}
+		]
 	},
 	"data": {
 		"0": {

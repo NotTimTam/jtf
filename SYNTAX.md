@@ -77,11 +77,11 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 ## Style Array
 
 -   The "style" array contains CSS style definitions for styling cells, rows, or columns.
--   A top-level "style" array applies to every table. "style" cascade, meaning table level styles will overwrite styles set at the top-level, unless overrides, such as the `!important` rule are used.
 -   Each style definition is an object with the following fields:
     -   "type": Either "class" or "style", indicating whether the style should be applied as a class or directly as inline CSS when rendered in an HTML dom structure.
     -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
     -   "data": Contains the content of the CSS style attribute or class attribute.
+-   A top-level "style" array applies to every table. "style" cascade, meaning table level styles will overwrite styles set at the top-level, unless overrides, such as the `!important` rule are used.
 
 # Formulas
 
