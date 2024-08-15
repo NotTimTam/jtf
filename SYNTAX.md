@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.1`)
+# JTF Syntax Standard (`v1.1.2`)
 
 ## Scope
 
@@ -30,11 +30,14 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   "author": A string indicating the name of the document's author.
         -   "title": A string indicating the title of the document, which can differ from the file name.
         -   "jtf": A [string representing the JTF standard version](#version-indication) being implemented in the file.
+        -   "css": Either:
+            -   A string containing CSS data, or
+            -   An array containing the path to CSS files used by the document's [style arrays](#style-array).
 
 ## Version Indication
 
 -   The `"jtf"` string within a document's metadata object is used to indicate the version of the JTF standard that the document conforms to. JTF processors can use this information to indicate whether the file can be edited with their implementation of the JTF standard.
--   The format of the string is the letter "v" followed by the full version number of the JTF standard used. I.e., `{ "jtf": "v1.0" }`
+-   The format of the string is the letter "v" followed by the full version number of the JTF standard used. I.e., `{ "jtf": "v1.1.2" }`
 
 ## Data Object
 
@@ -71,6 +74,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 ## Style Array
 
 -   The "style" array contains CSS style definitions for styling cells, rows, or columns.
+-   A top-level "style" array applies to every table. "style" cascade, meaning table level styles will overwrite styles set at the top-level, unless overrides, such as the `!important` rule are used.
 -   Each style definition is an object with the following fields:
     -   "type": Either "class" or "style", indicating whether the style should be applied as a class or directly as inline CSS when rendered in an HTML dom structure.
     -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
