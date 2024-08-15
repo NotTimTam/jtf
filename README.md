@@ -3,6 +3,7 @@
 JSON Table Format. An open-source file format for spreadsheets stored in JSON.
 
 [Read the syntax standard.](SYNTAX.md)
+[View an example JTF file.](example.jtf)
 
 This repository is a hybrid, it contains the standards and information on the `.jtf` file format, as well as an efficient library of tools for interacting with JTF data.
 
@@ -19,38 +20,3 @@ This library contains methods for validating, reading, and writing `.jtf` format
 For custom applications, developers looking to support `.jtf` files in their projects are encouraged to write their own code for interacting with the format.
 
 Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for more.
-
-## Example JTF file.
-
-```json
-{
-	"jtf": "v1.0",
-	"data": {
-		"0": {
-			"13": "This is some <b>bold</b> text."
-		},
-		"1": {},
-		"999": {
-			"0": "This is the 0th cell in the 999th row."
-		}
-	},
-	"style": [
-		{
-			"type": "class",
-			"target": [null, 2],
-			"data": "highlighted-row"
-		},
-		{
-			"type": "style",
-			"target": [[2], 1],
-			"data": "font-weight: bold;"
-		},
-		{
-			"type": "style",
-			"target": [[], 3],
-			"condition": "=SUM(3E, 12D) >= 12F",
-			"data": "background-color: #f0f0f0;"
-		}
-	]
-}
-```
