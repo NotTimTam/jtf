@@ -153,7 +153,7 @@ Functions within `.jtf` formulas must follow these rules:
         "0": "=myFunction(['1:4', 13], 'someStringInput')"
     }
 }
-
+```
 
 # Target Array Standard
 
