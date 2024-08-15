@@ -1,4 +1,4 @@
-# JTF Syntax Standard
+# JTF Syntax Standard (`v1.0`)
 
 ## Scope
 
@@ -20,9 +20,15 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 
 ## Top-Level Object
 
--   The top-most object in the document must contain the following keys:
+-   The top-most object in the document **must** contain the following keys:
+    -   "jtf": A string representing the JTF standard version being implemented in the file.
     -   "data": An object representing the tabular data.
     -   "style": An array containing CSS style definitions.
+
+## `jtf` String
+
+-   The `"jtf"` string at the top-level of the document is used to indicate the version of the JTF standard that the document conforms to. JTF processors can use this information to indicate whether the file can be edited with their implementation of the JTF standard.
+-   The format of the string is the letter "v" followed by the full version number of the JTF standard used. I.e., `{ "jtf": "v1.0" }`
 
 ## Data Object
 
