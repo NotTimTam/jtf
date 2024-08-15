@@ -1,8 +1,9 @@
 {
 	"metadata": {
 		"author": "NotTimTam",
-		"title": "JTF v1.1.1 Example Document",
-		"jtf": "v1.1.1"
+		"title": "JTF v1.1.2 Example Document",
+		"jtf": "v1.1.2",
+		"css": ".highlighed-row { color: yellow; }"
 	},
 	"data": {
 		"0": {
