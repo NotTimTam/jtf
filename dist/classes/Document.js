@@ -88,6 +88,30 @@ export default class Document {
 	}
 
 	/**
+	 * Get arrays of each table in the document.
+	 */
+	toArray() {
+		return Object.fromEntries(
+			Object.keys(this.data).map((index) => [
+				index,
+				this.tableToArray(index),
+			])
+		);
+	}
+
+	/**
+	 * Get csv strings of each table in the document.
+	 */
+	toCSV() {
+		return Object.fromEntries(
+			Object.keys(this.data).map((index) => [
+				index,
+				this.tableToCSV(index),
+			])
+		);
+	}
+
+	/**
 	 * Get the content of a cell.
 	 * @param {number|string} table The index of the table to convert.
 	 * @param {string|number} x The x-coordinate of the cell.
