@@ -24,6 +24,7 @@ Contributions to the format and codebase are also welcome. See [CONTRIBUTIONS.md
 
 ```json
 {
+	"jtf": "v1.0",
 	"data": {
 		"0": {
 			"13": "This is some <b>bold</b> text."
