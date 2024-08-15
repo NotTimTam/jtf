@@ -27,7 +27,7 @@ const data = JTF.parse(`
 			"0": {
 				"data": {
 					"0": {
-						"13": "This is some <b>bold</b> text.",
+						"13": "This is some <b>bold</b> text."
 					},
 					"1": {},
 					"999": {
@@ -42,6 +42,14 @@ const data = JTF.parse(`
 						"target": [
 							"0:10",
 							0
+						],
+						"data": "background-color: red;"
+					},
+                    {
+						"type": "style",
+						"target": [
+							"32:",
+							"0"
 						],
 						"data": "background-color: red;"
 					}
@@ -109,4 +117,4 @@ const data = JTF.parse(`
 	}
 `);
 
-console.log(data);
+// console.log(data);

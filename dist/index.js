@@ -206,7 +206,9 @@ export default class JTF {
 			}
 
 			console.debug(
-				`During parsing, extra data for ${extra.length} processors was detected within JTF document. No action is required.`
+				`During parsing, extra data for ${extra.length} processor${
+					extra.length === 1 ? "" : "s"
+				} was detected within JTF document. No action is required.`
 			);
 		}
 	}
@@ -214,7 +216,59 @@ export default class JTF {
 	/**
 	 * @param {Array<string|number>} targetingArray The targetting array to validate.
 	 */
-	static validateTargetingArray(targetingArray) {}
+	static validateTargetingArray(targetingArray) {
+		if (!(targetingArray instanceof Array))
+			throw new SyntaxError(
+				'Invalid targeting array provided. Proper format: "[x, y]".'
+			);
+
+		if (targetingArray.length > 2)
+			throw new SyntaxError(
+				'Targeting array provided too many parameters. Proper format: "[x, y]".'
+			);
+
+		if (targetingArray.length === 0) return;
+
+		for (let parameter of targetingArray) {
+			// Empty parameters are valid.
+			if (parameter === null || !parameter) continue;
+
+			// Integers are valid.
+			if (typeof parameter === "number" && !Number.isInteger(parameter))
+				throw new SyntaxError(
+					`Invalid parameter "${parameter}" provided. Number parameters in targeting arrays must be integers.`
+				);
+
+			if (typeof parameter === "string") {
+				parameter = parameter.trim();
+
+				if (!/^[0-9:]+$/.test(parameter))
+					throw new SyntaxError(
+						`Invalid parameter "${parameter}" provided. String parameters must contain either an integer, or a colon-delimited target.`
+					);
+
+				// Validate colon delimited parameters.
+				if (parameter.includes(":")) {
+					const parts = parameter
+						.split(":")
+						.map((part) => part.trim());
+
+					for (const part of parts) {
+						if (part === "") continue;
+
+						if (isNaN(+part) || !Number.isInteger(+part))
+							throw new SyntaxError(
+								`Invalid parameter "${part}" provided. Colon-delimited parameters can only use integers.`
+							);
+					}
+				}
+
+				// Integers that are stored in a string are valid.
+				if (!isNaN(+parameter) && Number.isInteger(+parameter))
+					continue;
+			}
+		}
+	}
 
 	/**
 	 * Validate a JTF style array.
