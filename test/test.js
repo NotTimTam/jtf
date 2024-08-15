@@ -1,20 +1,67 @@
-import JTF from "../index.js";
+import JTF from "../dist/index.js";
 
-const jtf = new JTF();
-
-const data = `
+const data = JTF.parse(`
 {
+	"createdAt": "2020-01-01T00:00:00.000Z",
+	"updatedAt": "${new Date().toISOString()}",
+	"metadata": {
+		"author": "NotTimTam",
+		"title": "JTF v1.1.4 Example Document",
+		"jtf": "v1.1.4",
+		"css": [".highlighed-row { color: yellow; }"]
+	},
 	"data": {
 		"0": {
-			"13": "**This is some bold text.**"
+			"data": {
+				"0": {
+					"13": "This is some <b>bold</b> text."
+				},
+				"1": {},
+				"999": {
+					"0": "This is the 0th cell in the 999th row."
+				}
+			},
+			"label": "First Table",
+			"style": [
+				{
+					"type": "style",
+					"target": [
+						"0:10",
+						0
+					],
+					"data": "background-color: red;"
+				}
+			]
 		},
-		"1": {},
-		"999": {
-			"0": "This is the 0th cell in the 999th row."
+		"1": {
+			"data": {
+				"0": {
+					"0": "This is some <b>bold</b> text in table two."
+				}
+			},
+			"label": "Second Table",
+			"style": [
+				{
+					"type": "style",
+					"target": [
+						0,
+						0
+					],
+					"data": "background-color: blue;"
+				}
+			]
 		},
-		"14": {
-			"12": "egg",
-			"13": "egg<span id='console'>egg4</span>"
+		"3": {
+			"data": {
+				"0": {
+					"0": 14,
+					"1": 16
+				},
+				"1": {
+					"0": "=[0,0]+[1,0]"
+				}
+			},
+			"label": "Third Table"
 		}
 	},
 	"style": [
@@ -45,7 +92,8 @@ const data = `
 			"condition": "=SUM(3E, 12D) >= 12F",
 			"data": "background-color: #f0f0f0;"
 		}
-	]}
-`;
+	]
+}
+`);
 
-console.log(JTF.validate(data, true));
+console.log(data);

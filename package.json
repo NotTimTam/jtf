@@ -1,0 +1,27 @@
+{
+  "name": "jtf",
+  "version": "1.1.4",
+  "description": "Utilities for interacting with .jtf files.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotTimTam/jtf.git"
+  },
+  "keywords": [
+    "json",
+    "table",
+    "spreadsheet",
+    "fileformat",
+    "utility"
+  ],
+  "author": "NotTimTam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NotTimTam/jtf/issues"
+  },
+  "homepage": "https://github.com/NotTimTam/jtf#readme"
+}

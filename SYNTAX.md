@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.3`)
+# JTF Syntax Standard (`v1.1.4`)
 
 ## Scope
 
@@ -32,7 +32,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   "jtf": A [string representing the JTF standard version](#version-indication) being implemented in the file.
         -   "css": Either:
             -   A string containing CSS data, or
-            -   An array containing the path to CSS files used by the document's [style arrays](#style-array).
+            -   An array of strings containing CSS data.
 
 ## Version Indication
 
@@ -68,8 +68,8 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
                 -   `"rel"`
             -   should be removed.
             -   Strings may contain [formulas](#formulas).
-- Each table object **can** contain the following keys, but will be considered valid without them:
-    - "style": A [style array](#style-array) that applies only to this table.   
+-   Each table object **can** contain the following keys, but will be considered valid without them:
+    -   "style": A [style array](#style-array) that applies only to this table.
 
 ## Style Array
 
@@ -93,7 +93,9 @@ Formulas are statements that run on/within `.jtf` cells. They are used to perfor
         -   See [function implementation](#functions) for potential `.jtf` processor implementation of `"string"` and `"boolean"` type cells.
 
 ## Referencing Multiple Cells
+
 If a formula uses a cell reference that targets multiple cells, the values in those cells should be combined before the formula executes. Example:
+
 ```jtf
 {
     "0": {
@@ -135,15 +137,15 @@ If a `.jtf` processor supports functions, it must adhere to the following syntac
 
 Functions within `.jtf` formulas must follow these rules:
 
--   Cell References: 
+-   Cell References:
+
     -   Functions that accept cell references as parameters must use the [targeting array standard](#target-array-standard) to specify the cells. They must also follow [formula rules](#referencing-multiple-cells) for handling arrays that target more than one cell.
-  
+
 -   Formula Integration:
     -   Functions should resolve to a value that contributes to the result of a formula.
     -   The operations of a function must affect only the cell where the formula is executed, and only directly through the return value of the function.
-    -   Functions cannot directly modify the contents of any cell other than the one they are executed in.  
+    -   Functions cannot directly modify the contents of any cell other than the one they are executed in.
     -   Functions may resolve to data types other than numbers. However, since formulas operate on numeric data, processors must handle scenarios where a formula involves operations between different data types.
-
 
 ### Example Function
 
