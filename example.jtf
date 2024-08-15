@@ -1,13 +1,50 @@
 {
-	"jtf": "v1.0",
+	"metadata": {
+		"author": "NotTimTam",
+		"title": "JTF v1.1.1 Example Document",
+		"jtf": "v1.1.1"
+	},
 	"data": {
 		"0": {
-			"13": "This is some <b>bold</b> text."
+			"data": {
+				"0": {
+					"13": "This is some <b>bold</b> text."
+				},
+				"1": {},
+				"999": {
+					"0": "This is the 0th cell in the 999th row."
+				}
+			},
+			"label": "First Table",
+			"style": [
+				{
+					"type": "style",
+					"target": [
+						"0:10",
+						0
+					],
+					"data": "background-color: red;"
+				},
+			]
 		},
-		"1": {},
-		"999": {
-			"0": "This is the 0th cell in the 999th row."
-		}
+		"1": {
+			"data": {
+				"0": {
+					"0": "This is some <b>bold</b> text in table two."
+				},
+			},
+			"label": "Second Table",
+			"style": [
+				{
+					"type": "style",
+					"target": [
+						0,
+						0
+					],
+					"data": "background-color: blue;"
+				},
+			]
+		},
 	},
 	"style": [
 		{
