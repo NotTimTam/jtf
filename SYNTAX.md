@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1`)
+# JTF Syntax Standard (`v1.1.1`)
 
 ## Scope
 
@@ -21,19 +21,19 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 ## Top-Level Object
 
 -   The top-most object in the document **must** contain the following keys:
-    -   "data": An object representing the tabular data.
-    -   "style": An array containing global CSS style definitions.
+    -   "data": An [object](#data-object) representing the tabular data.
+    -   "style": A [style array](#style-array) containing CSS style definitions that apply to every table in the document.
 -   The top-most object in the document **can** contain the following keys, but will be considered valid without them:
     -   "createdAt": An ISO 8601 conforming [date-time string](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-time-string-format) indicating the date/time the file was created on.
     -   "updatedAt": An ISO 8601 conforming [date-time string](https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-time-string-format) indicating the date/time the file was last updated on.
     -   "metadata": An object containing several details about the origin/ownership of the document:
         -   "author": A string indicating the name of the document's author.
         -   "title": A string indicating the title of the document, which can differ from the file name.
-        -   "jtf": A string representing the JTF standard version being implemented in the file.
+        -   "jtf": A [string representing the JTF standard version](#jtf-string) being implemented in the file.
 
 ## `jtf` String
 
--   The `"jtf"` string at the top-level of the document is used to indicate the version of the JTF standard that the document conforms to. JTF processors can use this information to indicate whether the file can be edited with their implementation of the JTF standard.
+-   The `"jtf"` string within a document's metadata object is used to indicate the version of the JTF standard that the document conforms to. JTF processors can use this information to indicate whether the file can be edited with their implementation of the JTF standard.
 -   The format of the string is the letter "v" followed by the full version number of the JTF standard used. I.e., `{ "jtf": "v1.0" }`
 
 ## Data Object
@@ -71,7 +71,6 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
 ## Style Array
 
 -   The "style" array contains CSS style definitions for styling cells, rows, or columns.
--   A top-level "style" array targets every data table, while one within a table only applies to that table.
 -   Each style definition is an object with the following fields:
     -   "type": Either "class" or "style", indicating whether the style should be applied as a class or directly as inline CSS when rendered in an HTML dom structure.
     -   "target": An array representing the targeted cells, rows, or columns. See [the target array info](#target-array-standard) for more info.
