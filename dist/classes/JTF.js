@@ -31,6 +31,17 @@ export default class JTF {
 	}
 
 	/**
+	 * @param {Document} document The document to stringify.
+	 * @returns {string} A stringified version of the document.
+	 */
+	stringify(document) {
+		if (!(document instanceof Document))
+			throw new Error('Provided object is not of type "Document".');
+
+		return document.stringify();
+	}
+
+	/**
 	 * Validate the contents of a table's cell.
 	 * @param {Object} cell The cell to validate.
 	 */

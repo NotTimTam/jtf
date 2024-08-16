@@ -35,6 +35,25 @@ export default class Table {
 	}
 
 	/**
+	 * Get the table's label.
+	 */
+	get label() {
+		return this.source.label;
+	}
+
+	/**
+	 * Set the table's label.
+	 */
+	set label(value) {
+		if (!value || typeof value !== "string")
+			throw new SyntaxError(
+				'Each table in the document must have a "label" string value.'
+			);
+
+		this.source.label = value;
+	}
+
+	/**
 	 * Convert a table into a 2D array.
 	 * @returns {string} The table as a 2D array.
 	 */
