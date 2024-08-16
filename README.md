@@ -8,6 +8,8 @@ JSON Table Format. An open-source file format for spreadsheets stored in JSON.
 
 This repository is a hybrid, it contains the standards and information on the `.jtf` file format, as well as an efficient library of tools for interacting with JTF data.
 
+[Read the wiki.](https://github.com/NotTimTam/jtf/wiki)
+
 ## Why JTF?
 
 The `.jtf` format is an attempt at bridging the gap between popular spreadsheet file formats and JavaScript. Complex libraries are generally required to parse `.xlsx` files and their equivalents for use in JavaScript. It is even harder to export content back in to those formats. Formats like `.csv` are far too rudimentary and do not support things like styling and formulas.
