@@ -1,5 +1,5 @@
 {
-  "name": "jtf",
+  "name": "@nottimtam/jtf",
   "version": "1.1.8",
   "description": "Utilities for interacting with .jtf files.",
   "main": "dist/index.js",
