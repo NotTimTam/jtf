@@ -34,7 +34,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
             -   A string containing CSS data, or
             -   An array of strings containing CSS data.
         -   "extra": An array that allows conforming processors to include additional data for extending their functionality. Each entry in the array should be an object containing:
-            -   "processor": A unique identifier for the processor that generated the data. This key helps distinguish between different processors' extensions.
+            -   "processor": A unique string identifier for the processor that generated the data. This key helps distinguish between different processors' extensions.
             -   Additional key/value pairs: These can be used to include processor-specific information or features not defined by the JTF syntax standard, as long as this additional data conforms to all specifications within the standard.
 
 ## Version Indication
