@@ -1,4 +1,4 @@
-import JTF from "./dist/index.js";
+import JTF from "./index.js";
 import fs from "fs";
 
 try {
