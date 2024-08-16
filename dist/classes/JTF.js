@@ -238,9 +238,14 @@ export default class JTF {
 
 		if (targetingArray.length === 0) return;
 
-		for (let parameter of targetingArray) {
+		const validateTargetingParameter = (parameter) => {
 			// Empty parameters are valid.
-			if (parameter === null || !parameter) continue;
+			if (parameter === null || !parameter) return;
+
+			if (parameter instanceof Array)
+				parameter.forEach((subParameter) =>
+					validateTargetingParameter(subParameter)
+				);
 
 			// Integers are valid.
 			if (typeof parameter === "number" && !Number.isInteger(parameter))
@@ -263,7 +268,7 @@ export default class JTF {
 						.map((part) => part.trim());
 
 					for (const part of parts) {
-						if (part === "") continue;
+						if (part === "") return;
 
 						if (isNaN(+part) || !Number.isInteger(+part))
 							throw new SyntaxError(
@@ -273,10 +278,13 @@ export default class JTF {
 				}
 
 				// Integers that are stored in a string are valid.
-				if (!isNaN(+parameter) && Number.isInteger(+parameter))
-					continue;
+				if (!isNaN(+parameter) && Number.isInteger(+parameter)) return;
 			}
-		}
+		};
+
+		targetingArray.forEach((parameter) =>
+			validateTargetingParameter(parameter)
+		);
 	}
 
 	/**
@@ -394,5 +402,72 @@ export default class JTF {
 		if (typeof data === "string") data = JSON.parse(data); // Convert the data into a JavaScript object.
 
 		return new Document(data);
+	}
+
+	/**
+	 * Check if a target array targets a specific coordinate.
+	 * @param {Array<number|string>} target The target array to check.
+	 * @param {number|string} x The x-coordinate to check.
+	 * @param {number|string} y The y-coordinate to check.
+	 */
+	static targetArrayIncludesCell(target, x, y) {
+		JTF.validateTargetingArray(target);
+
+		if (!isValidIndex(x))
+			throw new Error(
+				`Provided x-coordinate value "${x}" is not a valid integer.`
+			);
+
+		if (!isValidIndex(y))
+			throw new Error(
+				`Provided y-coordinate value "${y}" is not a valid integer.`
+			);
+
+		let [targetX, targetY] = target;
+
+		/**
+		 * Check if an index is included in a targeting value.
+		 * @param {string|number|Array<string|number|Array>} target The targeting value.
+		 * @param {number} index The index to check.
+		 * @returns {boolean} Whether the index is included in the targeting value.
+		 */
+		const compareIndex = (target, index) => {
+			// Check if target values are null, unprovided, or equal to the requested index.
+			if (
+				target === null ||
+				target === index ||
+				(target instanceof Array && target.length === 0)
+			)
+				return true;
+			else if (typeof target === "string") {
+				if (
+					!isNaN(+target) &&
+					Number.isInteger(+target) &&
+					+target === index
+				)
+					return true;
+
+				if (target.includes(":")) {
+					let [aPart, bPart] = target
+						.split(":")
+						.map((part) => part.trim());
+
+					if (!aPart || bPart === "") aPart = 0;
+					if (!bPart || bPart === "") bPart = Infinity;
+
+					aPart = +aPart;
+					bPart = +bPart;
+
+					if (index >= aPart && index < bPart) return true;
+				}
+			} else if (target instanceof Array)
+				for (const subTarget of target) {
+					if (compareIndex(subTarget, index)) return true;
+				}
+
+			return false;
+		};
+
+		return compareIndex(targetX, +x) && compareIndex(targetY, +y);
 	}
 }

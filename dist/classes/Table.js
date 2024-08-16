@@ -101,10 +101,6 @@ export default class Table {
 	 * @returns {Object<*>} An object containing the classes and styles to apply to this cell.
 	 */
 	getCellStyles(x, y) {
-		const globalStyles = this.document.source.style;
-
-		console.log(globalStyles, "Test");
-
 		if (!isValidIndex(x))
 			throw new Error(
 				`Provided x-coordinate value "${x}" is not a valid integer.`
@@ -115,7 +111,32 @@ export default class Table {
 				`Provided y-coordinate value "${y}" is not a valid integer.`
 			);
 
-		x = x.toString();
-		y = y.toString();
+		const stylesToCheck = [
+			...(this.document.source.style || []),
+			...(this.source.style || []),
+		];
+
+		const styles = {
+			style: [],
+			class: [],
+		};
+
+		for (const definition of stylesToCheck) {
+			const { target, type, data } = definition;
+
+			if (JTF.targetArrayIncludesCell(target, x, y)) {
+				if (type === "class") styles.class.push(data.trim());
+				else if (type === "style") styles.style.push(data.trim());
+			}
+		}
+
+		styles.class = styles.class.join(" ");
+		styles.style = styles.style
+			.map((style) =>
+				style[style.length - 1] === ";" ? style : `${style};`
+			)
+			.join(" ");
+
+		return styles;
 	}
 }

@@ -35,14 +35,30 @@ const data = JTF.parse(`
 				"label": "First Table",
 				"style": [
 					{
-						"type": "style",
+						"type": "class",
 						"target": [
-							"0:10",
+							["0:4", 13],
 							0
 						],
-						"data": "background-color: red;"
+						"data": "my-class-name"
+					},
+					{
+						"type": "class",
+						"target": [
+							["0:4", 13],
+							0
+						],
+						"data": "my-other-class-name"
 					},
                     {
+						"type": "style",
+						"target": [
+							"32:",
+							"0"
+						],
+						"data": "color: green"
+					},
+					{
 						"type": "style",
 						"target": [
 							"32:",
@@ -63,7 +79,7 @@ const data = JTF.parse(`
 					{
 						"type": "style",
 						"target": [
-							0,
+							"0:14",
 							0
 						],
 						"data": "background-color: blue;"
