@@ -18,6 +18,9 @@
     "fileformat",
     "utility"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "NotTimTam",
   "license": "MIT",
   "bugs": {
