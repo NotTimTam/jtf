@@ -10,7 +10,7 @@ import {
  * JTF document processing utility.
  */
 export default class JTF {
-	static supportedVersions = ["v1.1.8"];
+	static supportedVersions = ["v1.1.9"];
 
 	/**
 	 * Validate the key indeces of an object.
@@ -69,6 +69,15 @@ export default class JTF {
 	 * @param {Object} table The table to validate.
 	 */
 	static validateTable(table) {
+		const validKeys = ["data", "label", "style"];
+
+		Object.keys(table).forEach((key) => {
+			if (!validKeys.includes(key))
+				throw new SyntaxError(
+					`Invalid key "${key}" provided to table.`
+				);
+		});
+
 		const { data, label, style } = table;
 
 		// Validate label.
@@ -191,32 +200,18 @@ export default class JTF {
 		}
 
 		if (extra) {
-			if (!(extra instanceof Array))
+			if (!isPlainObject(extra))
 				throw new SyntaxError(
-					'Invalid "extra" object provided to document metadata. Expected array.'
+					`Expected a plain object but recieved a value of type ${
+						extra instanceof Array ? '"array"' : `"${typeof extra}"`
+					}.`
 				);
 
-			for (const processorData of extra) {
-				if (!isPlainObject(processorData))
-					throw new SyntaxError(
-						`Invalid processor data provided to "extra" metadata configuration. Expected plain object but recieved a value of type ${
-							processorData instanceof Array
-								? '"array"'
-								: `"${typeof processorData}"`
-						}.`
-					);
-
-				const { processor } = processorData;
-
-				if (!processor || typeof processor !== "string")
-					throw new SyntaxError(
-						`Invalid processor data provided to "extra" metadata configuration. Expected a "processor" key with a string value.`
-					);
-			}
+			const length = Object.keys(extra).length;
 
 			console.debug(
-				`During parsing, extra data for ${extra.length} processor${
-					extra.length === 1 ? "" : "s"
+				`During parsing, extra data for ${length} processor${
+					length === 1 ? "" : "s"
 				} was detected within JTF document. No action is required.`
 			);
 		}
@@ -415,12 +410,12 @@ export default class JTF {
 
 		if (!isValidIndex(x))
 			throw new Error(
-				`Provided x-coordinate value "${x}" is not a valid integer.`
+				`Provided x-coordinate value "${x}" is not a valid integer string.`
 			);
 
 		if (!isValidIndex(y))
 			throw new Error(
-				`Provided y-coordinate value "${y}" is not a valid integer.`
+				`Provided y-coordinate value "${y}" is not a valid integer string.`
 			);
 
 		let [targetX, targetY] = target;

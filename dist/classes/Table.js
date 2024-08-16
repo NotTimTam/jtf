@@ -7,14 +7,31 @@ import Document from "./Document.js";
  */
 export default class Table {
 	/**
-	 * @param {object} data The table's data.
 	 * @param {Document} document This table's parent document
+	 * @param {object} index The table's index in the document..
 	 */
-	constructor(data, document) {
-		JTF.validateTable(data); // Validate the data before object creation.
+	constructor(document, index) {
+		if (!isValidIndex(index))
+			throw new Error(
+				`Provided index value "${index}" is not a valid integer string.`
+			);
 
-		this.source = data;
 		this.document = document;
+		this.index = index;
+	}
+
+	/**
+	 * Get the source data for this table.
+	 */
+	get source() {
+		return this.document.source.data[this.index];
+	}
+
+	/**
+	 * Set the source data for this table.
+	 */
+	set source(value) {
+		this.document.source.data[this.index] = value;
 	}
 
 	/**
@@ -76,12 +93,12 @@ export default class Table {
 	getCell(x, y) {
 		if (!isValidIndex(x))
 			throw new Error(
-				`Provided x-coordinate value "${x}" is not a valid integer.`
+				`Provided x-coordinate value "${x}" is not a valid integer string.`
 			);
 
 		if (!isValidIndex(y))
 			throw new Error(
-				`Provided y-coordinate value "${y}" is not a valid integer.`
+				`Provided y-coordinate value "${y}" is not a valid integer string.`
 			);
 
 		x = x.toString();
@@ -95,6 +112,39 @@ export default class Table {
 	}
 
 	/**
+	 * Set the content of a cell.
+	 * @param {string|number} x The x-coordinate of the cell.
+	 * @param {string|number} y The y-coordinate of the cell.
+	 * @param {string|number|null|boolean} value The value to set.
+	 */
+	setCell(x, y, value) {
+		JTF.validateCell(value);
+
+		if (!isValidIndex(x))
+			throw new Error(
+				`Provided x-coordinate value "${x}" is not a valid integer string.`
+			);
+
+		if (!isValidIndex(y))
+			throw new Error(
+				`Provided y-coordinate value "${y}" is not a valid integer string.`
+			);
+
+		x = x.toString();
+		y = y.toString();
+
+		const {
+			source: { data },
+		} = this;
+
+		if (!data[y]) data[y] = {};
+
+		data[y][x] = value;
+
+		this.document.updateUpdatedAt();
+	}
+
+	/**
 	 * Get the styles that must be applied to a cell.
 	 * @param {string|number} x The x-coordinate of the cell.
 	 * @param {string|number} y The y-coordinate of the cell.
@@ -103,12 +153,12 @@ export default class Table {
 	getCellStyles(x, y) {
 		if (!isValidIndex(x))
 			throw new Error(
-				`Provided x-coordinate value "${x}" is not a valid integer.`
+				`Provided x-coordinate value "${x}" is not a valid integer string.`
 			);
 
 		if (!isValidIndex(y))
 			throw new Error(
-				`Provided y-coordinate value "${y}" is not a valid integer.`
+				`Provided y-coordinate value "${y}" is not a valid integer string.`
 			);
 
 		const stylesToCheck = [

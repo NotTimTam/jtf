@@ -1,12 +1,11 @@
 {
 	"metadata": {
 		"author": "NotTimTam",
-		"title": "JTF v1.1.8 Example Document",
-		"jtf": "v1.1.8",
+		"title": "JTF v1.1.9 Example Document",
+		"jtf": "v1.1.9",
 		"css": ".highlighed-row { color: yellow; }",
-		"extra": [
-			{
-				"processor": "jtf-core",
+		"extra": {
+			"jtf-core": {
 				"someExtraData": [
 					345,
 					2345,
@@ -14,8 +13,9 @@
 					21345,
 					764
 				]
-			}
-		]
+			},
+			"my-processor": "38298752935-2357627835023-128746128764"
+		}
 	},
 	"data": {
 		"0": {

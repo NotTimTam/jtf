@@ -1,4 +1,4 @@
-# JTF Syntax Standard (`v1.1.8`)
+# JTF Syntax Standard (`v1.1.9`)
 
 ## Scope
 
@@ -33,9 +33,9 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
         -   "css": Either:
             -   A string containing CSS data, or
             -   An array of strings containing CSS data.
-        -   "extra": An array that allows conforming processors to include additional data for extending their functionality. Each entry in the array should be an object containing:
-            -   "processor": A unique string identifier for the processor that generated the data. This key helps distinguish between different processors' extensions.
-            -   Additional key/value pairs: These can be used to include processor-specific information or features not defined by the JTF syntax standard, as long as this additional data conforms to all specifications within the standard.
+        -   "extra": An object that allows conforming processors to include additional data for extending their functionality.
+            -   Each key in the array should be a unique identifier for the processor or extension that generated the data. This key helps distinguish between different processors' extensions.
+            -   The value of the object can be any JSON-supported data type, used to include processor-specific information or features not defined by the JTF syntax standard, as long as this data conforms to all specifications within the standard.
 
 ## Version Indication
 
@@ -51,7 +51,7 @@ The goal of this specification is only to define the syntax of valid JTF texts. 
     -   "data": An object that functions as an array-like structure, where each key represents the (0-based) index of a row. The indeces do not need to be in order. Due to the nature of JSON/JS Objects, when more than one of the same key are present, the latter-most overwrites the rest.
         -   Each value within the table's "data" object is an object representing a row of data.
         -   Within each row object, keys represent the (0-based) indices of each column, and values represent the content of the column. (i.e., the cell) The indeces function similarly to the row indeces mentioned above.
-        -   Column content (cells) can be a string, number, or boolean. Both empty strings `""`, and `null` are considered "empty" cells.
+        -   Column content (cells) can be a string, number, boolean or `null`. Both empty strings `""`, and `null` are considered "empty" cells.
 -   Each table object **can** contain the following keys, but will be considered valid without them:
     -   "style": A [style array](#style-array) that applies only to this table.
 
