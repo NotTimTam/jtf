@@ -1,6 +1,4 @@
-import JTF from "./dist/index.js";
-
-import fs from "fs";
+import JTF, { Document, Table } from "./dist/index.js";
 
 const data = JTF.parse(`
 {	
@@ -118,4 +116,5 @@ const data = JTF.parse(`
 
 // fs.writeFileSync("output.csv", data.tableToCSV("0"));
 
-console.log(data.toCSV());
+console.log(data.getCellStyles(0, 13, 0));
+// console.log(data.getCellStyles(0, 0, 0));

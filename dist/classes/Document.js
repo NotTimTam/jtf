@@ -1,5 +1,6 @@
-import JTF from "../index.js";
+import JTF from "./JTF.js";
 import { isValidIndex } from "../util/data.js";
+import Table from "./Table.js";
 
 /**
  * A JTF Document.
@@ -11,80 +12,30 @@ export default class Document {
 	constructor(data) {
 		JTF.validate(data); // Validate the data before object creation.
 
-		for (const [key, value] of Object.entries(data)) this[key] = value; // Parse the data into the object.
+		this.source = data;
 
-		if (!this.createdAt) this.createdAt = new Date().toISOString();
-		if (!this.updatedAt) this.updatedAt = new Date().toISOString();
+		if (!this.source.createdAt)
+			this.source.createdAt = new Date().toISOString();
+		if (!this.source.updatedAt)
+			this.source.updatedAt = new Date().toISOString();
 
-		if (!this.metadata) this.metadata = {};
-		if (!this.metadata.jtf) this.metadata.jtf = "v1.1.18";
+		if (!this.source.metadata) this.source.metadata = {};
+		if (!this.source.metadata.jtf) this.source.metadata.jtf = "v1.1.18";
+
+		this.tables = Object.fromEntries(
+			Object.entries(this.source.data).map(([index, table]) => [
+				index,
+				new Table(table, this),
+			])
+		);
 	}
 
 	/**
 	 * @returns {string} The data object represented by a JTF string.
 	 */
 	stringify() {
-		return JSON.stringify(this.data);
-	}
-
-	/**
-	 * Convert a table into a 2D array.
-	 * @param {number|string} table The index of the table to convert.
-	 * @returns {string} The table as a 2D array.
-	 */
-	tableToArray(table = 0) {
-		if (!isValidIndex(table))
-			throw new Error(
-				`Provided "table" value "${table}" is not a valid integer.`
-			);
-
-		table = table.toString();
-
-		table = this.data[table];
-
-		if (!table) throw new Error(`No table in document at index "${table}"`);
-
-		const { data } = table;
-
-		let array = [];
-
-		for (const [y, row] of Object.entries(data)) {
-			if (!array[y]) array[y] = [];
-
-			for (const [x, cell] of Object.entries(row)) {
-				array[y][x] = cell;
-			}
-		}
-
-		return array;
-	}
-
-	/**
-	 * @returns {string} The data object in CSV format.
-	 */
-	tableToCSV(table = 0) {
-		table = this.tableToArray(table);
-
-		// Determine the widest the CSV should be.
-		let widestRow = 0;
-		for (let y = 0; y < table.length; y++)
-			if (table[y] && table[y].length > widestRow)
-				widestRow = table[y].length;
-
-		let csv = "";
-
-		for (let y = 0; y < table.length; y++) {
-			if (!table[y]) csv += ",".repeat(widestRow) + "\n";
-			else {
-				for (let x = 0; x < table[y].length; x++) {
-					if (!table[y][x]) csv += ",";
-					else csv += table[y][x] + ",";
-				}
-				if (y < table.length - 1) csv += "\n";
-			}
-		}
-
-		return csv;
+		const { data } = this.source;
+		return JSON.stringify(data);
 	}
 
 	/**
@@ -92,9 +43,9 @@ export default class Document {
 	 */
 	toArray() {
 		return Object.fromEntries(
-			Object.keys(this.data).map((index) => [
+			Object.entries(this.tables).map(([index, table]) => [
 				index,
-				this.tableToArray(index),
+				table.toArray(),
 			])
 		);
 	}
@@ -104,9 +55,9 @@ export default class Document {
 	 */
 	toCSV() {
 		return Object.fromEntries(
-			Object.keys(this.data).map((index) => [
+			Object.entries(this.tables).map(([index, table]) => [
 				index,
-				this.tableToCSV(index),
+				table.toCSV(),
 			])
 		);
 	}
@@ -124,26 +75,28 @@ export default class Document {
 				`Provided "table" value "${table}" is not a valid integer.`
 			);
 
-		if (!isValidIndex(x))
+		if (!this.tables[table])
+			throw new Error(`No table in document at index "${table}"`);
+
+		return this.tables[table].getCell(x, y);
+	}
+
+	/**
+	 * Get the styles that must be applied to a cell.
+	 * @param {number|string} table The index of the table to convert.
+	 * @param {string|number} x The x-coordinate of the cell.
+	 * @param {string|number} y The y-coordinate of the cell.
+	 * @returns {Object<*>} An object containing the classes and styles to apply to this cell.
+	 */
+	getCellStyles(table, x, y) {
+		if (!isValidIndex(table))
 			throw new Error(
-				`Provided x-coordinate value "${x}" is not a valid integer.`
+				`Provided "table" value "${table}" is not a valid integer.`
 			);
 
-		if (!isValidIndex(y))
-			throw new Error(
-				`Provided y-coordinate value "${y}" is not a valid integer.`
-			);
+		if (!this.tables[table])
+			throw new Error(`No table in document at index "${table}"`);
 
-		x = x.toString();
-		y = y.toString();
-		table = table.toString();
-
-		table = this.data[table];
-
-		if (!table) throw new Error(`No table in document at index "${table}"`);
-
-		const { data } = table;
-
-		return data[y] && data[y][x];
+		return this.tables[table].getCellStyles(x, y);
 	}
 }
