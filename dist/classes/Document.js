@@ -41,7 +41,7 @@ export default class Document {
 	 */
 	__cleanMetadata() {
 		if (!this.source.metadata) this.source.metadata = {};
-		if (!this.source.metadata.jtf) this.source.metadata.jtf = "v1.1.18";
+		if (!this.source.metadata.jtf) this.source.metadata.jtf = "v1.1.9";
 	}
 
 	get tables() {
