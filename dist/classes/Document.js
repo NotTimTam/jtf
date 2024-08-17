@@ -1,5 +1,5 @@
 import JTF from "./JTF.js";
-import { isPlainObject, isValidIndex } from "../util/data.js";
+import { isValidIndex } from "../util/data.js";
 import Table from "./Table.js";
 
 /**
